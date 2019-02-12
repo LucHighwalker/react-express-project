@@ -115,7 +115,7 @@ class App extends Component {
           <span>
             sides:&nbsp;
             <input
-              type="text"
+              type="number"
               onChange={(e) => {
                 console.log(e);
                 e.preventDefault();
@@ -133,7 +133,7 @@ class App extends Component {
             <span>
               rolls:&nbsp;
               <input
-                type="text"
+                type="number"
                 onChange={(e) => {
                   console.log(e);
                   e.preventDefault();
@@ -147,7 +147,7 @@ class App extends Component {
             <span>
               sides:&nbsp;
               <input
-                type="text"
+                type="number"
                 onChange={(e) => {
                   console.log(e);
                   e.preventDefault();
