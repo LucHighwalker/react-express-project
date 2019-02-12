@@ -3,6 +3,10 @@
 /* eslint-disable semi */
 import React, { Component } from 'react';
 
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+
+import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 
 class App extends Component {
@@ -11,6 +15,7 @@ class App extends Component {
 
     // State holds values returned from server
     this.state = {
+      mode: 'number',
       about: null,
       message: null,
       lotto: null,
@@ -57,9 +62,27 @@ class App extends Component {
     return null;
   }
 
-  fetchMessage(url = '/random/99') {
+  fetchMessage() {
     // Wrapping the API call in a function allow you to make calls to this
     // API as often as needed.
+
+    const { mode } = this.state;
+
+    let url = '';
+
+    switch (mode) {
+      case 'lotto':
+        url = 'lotto';
+        break;
+
+      case 'die':
+        url = 'random/die/6';
+        break;
+
+      default:
+        url = 'random/99';
+        break;
+    }
 
     // This calls a route and passes value in the query string.
     fetch(url)
@@ -96,33 +119,69 @@ class App extends Component {
   }
 
   render() {
-    const { about } = this.state;
+    const { about, mode } = this.state;
 
     return (
       <div className="App">
         <p>
-          <strong>About:</strong>
+          <strong>About:&nbsp;</strong>
           {about}
+          <br />
+          <strong>Mode:&nbsp;</strong>
+          {mode}
         </p>
         <div>{this.renderMessage()}</div>
-        <p>
-          <button
-            type="button"
+
+        <button
+          type="button"
+          onClick={() => {
+            this.fetchMessage();
+          }}
+        >
+          Generate
+        </button>
+
+        <br />
+        <br />
+
+        <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+          <Dropdown.Item
             onClick={() => {
-              this.fetchMessage();
+              this.setState({
+                mode: 'number',
+              });
             }}
           >
-            Random Num
-          </button>
-          <button
-            type="button"
+            Number
+          </Dropdown.Item>
+          <Dropdown.Item
             onClick={() => {
-              this.fetchMessage('/lotto');
+              this.setState({
+                mode: 'lotto',
+              });
             }}
           >
-            Random Lotto
-          </button>
-        </p>
+            Lotto
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              this.setState({
+                mode: 'die',
+              });
+            }}
+          >
+            Die
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              this.setState({
+                mode: 'dice',
+              });
+            }}
+          >
+            Dice
+          </Dropdown.Item>
+        </DropdownButton>
       </div>
     );
   }
