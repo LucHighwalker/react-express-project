@@ -18,6 +18,8 @@ class App extends Component {
       mode: 'number',
       about: null,
       message: null,
+      rolls: null,
+      sides: null,
       lotto: null,
       power: null,
     };
@@ -66,7 +68,7 @@ class App extends Component {
     // Wrapping the API call in a function allow you to make calls to this
     // API as often as needed.
 
-    const { mode } = this.state;
+    const { mode, rolls, sides } = this.state;
 
     let url = '';
 
@@ -76,7 +78,11 @@ class App extends Component {
         break;
 
       case 'die':
-        url = 'random/die/6';
+        url = `random/die/${sides}`;
+        break;
+
+      case 'dice':
+        url = `random/dice/${sides}/${rolls}`;
         break;
 
       default:
@@ -98,6 +104,65 @@ class App extends Component {
       .catch((err) => {
         console.log(err.message);
       });
+  }
+
+  renderControls() {
+    const { mode } = this.state;
+
+    switch (mode) {
+      case 'die':
+        return (
+          <span>
+            sides:&nbsp;
+            <input
+              type="text"
+              onChange={(e) => {
+                console.log(e);
+                e.preventDefault();
+                this.setState({
+                  sides: e.target.value,
+                });
+              }}
+            />
+          </span>
+        );
+
+      case 'dice':
+        return (
+          <div>
+            <span>
+              rolls:&nbsp;
+              <input
+                type="text"
+                onChange={(e) => {
+                  console.log(e);
+                  e.preventDefault();
+                  this.setState({
+                    rolls: e.target.value,
+                  });
+                }}
+              />
+            </span>
+            <br />
+            <span>
+              sides:&nbsp;
+              <input
+                type="text"
+                onChange={(e) => {
+                  console.log(e);
+                  e.preventDefault();
+                  this.setState({
+                    sides: e.target.value,
+                  });
+                }}
+              />
+            </span>
+          </div>
+        );
+
+      default:
+        return null;
+    }
   }
 
   renderMessage() {
@@ -131,6 +196,8 @@ class App extends Component {
           {mode}
         </p>
         <div>{this.renderMessage()}</div>
+        <br />
+        <div>{this.renderControls()}</div>
 
         <button
           type="button"
